@@ -25,12 +25,14 @@ jobs:
 
       - name: Extract project ZIP
         run: |
+          rm -rf project
+          mkdir -p project
           unzip -o personal-ai-os-build-01.zip -d project
 
-      - - name: Setup Node.js
-  uses: actions/setup-node@v5
-  with:
-    node-version: 22
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
 
       - name: Install dependencies
         working-directory: project
@@ -40,7 +42,7 @@ jobs:
         working-directory: project
         run: npm run build
 
-      - name: Setup Pages
+      - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
@@ -52,7 +54,9 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
     runs-on: ubuntu-latest
+
     needs: build
 
     steps:
